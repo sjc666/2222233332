@@ -36,6 +36,15 @@ jobs:
       - name: Fetch latest geeked solver
         run: |
           git clone https://github.com/xKiian/GeekedTest.git temp_geeked
+          python -c "
+          with open('temp_geeked/geeked/sign.py', 'r', encoding='utf-8') as f:
+              code = f.read()
+          code = code.replace('from geeked.slide import SlideSolver', 'SlideSolver = None')
+          code = code.replace('from geeked.gobang import GobangSolver', 'GobangSolver = None')
+          code = code.replace('from geeked.icon import IconSolver', 'IconSolver = None')
+          with open('temp_geeked/geeked/sign.py', 'w', encoding='utf-8') as f:
+              f.write(code)
+          "
           mv temp_geeked/geeked ./geeked
           rm -rf temp_geeked
       - name: Run sign
